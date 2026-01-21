@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: black; }
+        body { font-family: 'Poppins', sans-serif; background-color: black; margin: 0; }
         h1, h2, h3, .brand-font { font-family: 'Playfair Display', serif; }
         .text-pink-custom { color: #FF1493; }
         .bg-pink-custom { background-color: #FF1493; }
@@ -20,9 +20,9 @@
             100% { transform: translateY(0px); }
         }
         .animate-float { animation: float 3s ease-in-out infinite; }
+        #root { min-height: 100vh; }
     </style>
-    <!-- Configuração do Babel para aceitar extensões .tsx/.jsx como módulos -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
     <script type="importmap">
 {
   "imports": {
@@ -34,15 +34,117 @@
   }
 }
 </script>
+    
+    <!-- Babel Standalone para transpilar JSX/TSX no navegador -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body class="bg-black text-white">
     <div id="root"></div>
     
-    <!-- Carregamento via Babel Standalone -->
+    <!-- Script principal transpilado pelo Babel -->
     <script type="text/babel" data-type="module">
-        import React from 'react';
+        import React, { useState } from 'react';
         import ReactDOM from 'react-dom/client';
-        import App from './App.tsx';
+
+        // Constantes integradas para evitar erros de importação de arquivo
+        const SITE_ASSETS = {
+          LOGO: "assets/logo/logo.jpg",
+          HERO_BANNER: "assets/banners/hero.jpg",
+        };
+
+        const PRODUCTS = [
+          { id: 1, name: "Vestido Noite Luxury", tag: "Mais Vendido", image: "assets/produtos/001.webp" },
+          { id: 2, name: "Conjunto Pink Power", tag: "Edição Limitada", image: "assets/produtos/002.webp" },
+          { id: 3, name: "Blazer Alfaiataria Black", tag: "Exclusivo", image: "assets/produtos/003.webp" },
+          { id: 4, name: "Body Glamour", tag: "Novo", image: "assets/produtos/004.webp" },
+          { id: 5, name: "Saia Couro Eco", tag: "Destaque", image: "assets/produtos/005.webp" },
+          { id: 6, name: "Macacão Noite", tag: "Últimas Peças", image: "assets/produtos/006.webp" }
+        ];
+
+        const App = () => {
+          const whatsappLink = "https://wa.me/5511980183198?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20ver%20mais%20peças.";
+          const instagramLink = "https://www.instagram.com/ck.fashionstore_/";
+
+          return (
+            <div className="min-h-screen bg-black text-white selection:bg-pink-600 selection:text-white overflow-x-hidden">
+              <div className="bg-[#FF1493] text-white text-[10px] md:text-xs py-2 text-center font-bold tracking-[0.2em] uppercase px-4">
+                📦 Enviamos para todo o Brasil • 5% OFF no PIX
+              </div>
+
+              <header className="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/5 px-4 py-4 md:px-12 flex justify-between items-center">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="h-10 w-10 md:h-14 md:w-14 rounded-full border border-[#FF1493]/50 overflow-hidden bg-zinc-900">
+                    <img 
+                      src={SITE_ASSETS.LOGO} 
+                      alt="CK" 
+                      className="w-full h-full object-cover"
+                      onError={(e) => { e.target.src = 'https://placehold.co/200x200/000000/FF1493?text=CK'; }}
+                    />
+                  </div>
+                  <h1 className="text-lg md:text-2xl font-bold brand-font text-white tracking-tighter">
+                    CK <span className="text-[#FF1493]">FASHION</span>
+                  </h1>
+                </div>
+                <div className="flex items-center gap-4">
+                  <a href={instagramLink} target="_blank" className="text-xl hover:text-[#FF1493] transition-all"><i className="fab fa-instagram"></i></a>
+                  <a href={whatsappLink} target="_blank" className="bg-[#FF1493] text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2">
+                    <i className="fab fa-whatsapp"></i> <span className="hidden sm:inline">CONTATO</span>
+                  </a>
+                </div>
+              </header>
+
+              <section className="relative h-[80vh] flex items-center justify-center">
+                <div className="absolute inset-0 z-0">
+                  <img 
+                    src={SITE_ASSETS.HERO_BANNER} 
+                    className="w-full h-full object-cover opacity-40"
+                    onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070'; }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                </div>
+                <div className="relative z-10 text-center px-4">
+                  <span className="text-[#FF1493] font-bold tracking-[0.4em] text-xs mb-4 block">NEW COLLECTION 2024</span>
+                  <h2 className="text-5xl md:text-8xl font-bold mb-8 brand-font leading-tight">
+                    Sua <span className="text-[#FF1493] italic">Essência</span>,<br/>
+                    Seu Poder.
+                  </h2>
+                  <a href="#colecao" className="bg-white text-black px-10 py-4 rounded-full font-black uppercase text-sm hover:bg-[#FF1493] hover:text-white transition-all">
+                    Explorar Looks
+                  </a>
+                </div>
+              </section>
+
+              <section id="colecao" className="py-24 px-6 md:px-12">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {PRODUCTS.map((p) => (
+                    <div key={p.id} className="group bg-zinc-900 rounded-2xl overflow-hidden border border-white/5">
+                      <div className="aspect-[3/4] relative overflow-hidden">
+                        <img 
+                          src={p.image} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          onError={(e) => { e.target.src = 'https://placehold.co/600x800/222222/FF1493?text=Ver+Peça'; }}
+                        />
+                        <div className="absolute top-4 left-4 bg-black/80 text-[#FF1493] text-[10px] font-bold px-3 py-1 rounded-full">{p.tag}</div>
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold mb-4">{p.name}</h3>
+                        <a href={whatsappLink} className="block w-full text-center bg-[#FF1493] py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity">CONSULTAR</a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <footer className="py-12 border-t border-white/5 text-center text-gray-500 text-[10px] tracking-widest uppercase">
+                <p>© 2024 CK FASHION STORE. TODOS OS DIREITOS RESERVADOS.</p>
+              </footer>
+
+              <a href={whatsappLink} className="fixed bottom-8 right-8 bg-[#25D366] text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-lg z-50 animate-float">
+                <i className="fab fa-whatsapp"></i>
+              </a>
+            </div>
+          );
+        };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
