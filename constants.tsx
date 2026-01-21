@@ -1,5 +1,5 @@
 
-import { Product, Review, FAQItem } from './types';
+import { Product, Review, FAQItem } from './types.ts';
 
 export const PRODUCTS: Product[] = [
   { id: 1, name: "Vestido Glamour Noir", price: 189.90, originalPrice: 259.90, tag: "Mais Vendido", image: "https://agenciafoxon.com.br/wp-content/uploads/2026/01/001.png" },
