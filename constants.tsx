@@ -1,13 +1,13 @@
 
-import { Product, Review, FAQItem } from './types.ts';
+import { Product, Review, FAQItem } from './types';
 
 export const PRODUCTS: Product[] = [
   { id: 1, name: "Vestido Glamour Noir", price: 189.90, originalPrice: 259.90, tag: "Mais Vendido", image: "https://agenciafoxon.com.br/wp-content/uploads/2026/01/001.png" },
   { id: 2, name: "Conjunto Pink Velvet", price: 229.90, originalPrice: 299.90, tag: "Edição Limitada", image: "https://agenciafoxon.com.br/wp-content/uploads/2026/01/002.png" },
   { id: 3, name: "Blazer Executive White", price: 349.90, originalPrice: 450.00, tag: "Exclusivo", image: "https://agenciafoxon.com.br/wp-content/uploads/2026/01/003.png" },
   { id: 4, name: "Saia Midi Rosé", price: 159.90, originalPrice: 199.90, tag: "Novo", image: "https://agenciafoxon.com.br/wp-content/uploads/2026/01/004.png" },
-  { id: 5, name: "Look Chic Day", price: 129.90, originalPrice: 179.90, tag: "Oferta", image: "https://agenciafoxon.com.br/wp-content/uploads/2026/01/005.png" },
-  { id: 6, name: "Calça Pantalona Lux", price: 210.00, originalPrice: 280.00, tag: "Destaque", image: "https://agenciafoxon.com.br/wp-content/uploads/2026/01/006.png" }
+  { id: 5, name: "Body Rendado Black", price: 129.90, originalPrice: 179.90, tag: "Oferta", image: "https://picsum.photos/seed/fashion5/600/800" },
+  { id: 6, name: "Calça Pantalona Lux", price: 210.00, originalPrice: 280.00, tag: "Destaque", image: "https://picsum.photos/seed/fashion6/600/800" }
 ];
 
 export const REVIEWS: Review[] = [
