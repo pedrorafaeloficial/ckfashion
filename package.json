@@ -6,7 +6,7 @@
   "main": "index.tsx",
   "type": "module",
   "scripts": {
-    "start": "npx serve -s .",
+    "start": "npx serve -s . -l 81",
     "build": "echo 'Build skip: using CDN and ESM direct imports'"
   },
   "dependencies": {
