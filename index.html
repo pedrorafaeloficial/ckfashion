@@ -5,16 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CK Fashion Store | Moda Feminina Exclusiva</title>
+    
+    <!-- Bibliotecas Externas -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Poppins', sans-serif; }
+        body { font-family: 'Poppins', sans-serif; background-color: black; margin: 0; }
         h1, h2, h3, .brand-font { font-family: 'Playfair Display', serif; }
         /* Rosa Choque / Deep Pink */
         .text-pink-custom { color: #FF1493; }
         .bg-pink-custom { background-color: #FF1493; }
         .border-pink-custom { border-color: #FF1493; }
+        
         .animate-float { animation: float 3s ease-in-out infinite; }
         @keyframes float {
             0% { transform: translateY(0px); }
@@ -26,18 +30,290 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
+        html { scroll-behavior: smooth; }
     </style>
-<script type="importmap">
+
+    <!-- React e Babel para processamento no navegador -->
+    <script type="importmap">
 {
   "imports": {
+    "react": "https://esm.sh/react@19.2.3",
+    "react-dom": "https://esm.sh/react-dom@19.2.3",
+    "react-dom/client": "https://esm.sh/react-dom@19.2.3/client",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3"
+    "react/": "https://esm.sh/react@^19.2.3/"
   }
 }
 </script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body class="bg-black text-white">
     <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+        import React, { useState } from 'react';
+        import ReactDOM from 'react-dom/client';
+
+        // --- DADOS DO SITE (CONSTANTS) ---
+        const PRODUCTS = [
+            { id: 1, name: "Vestido Glamour Noir", tag: "Mais Vendido", image: "/assets/images/looks/001.webp" },
+            { id: 2, name: "Conjunto Pink Velvet", tag: "Edição Limitada", image: "/assets/images/looks/002.webp" },
+            { id: 3, name: "Blazer Executive White", tag: "Exclusivo", image: "/assets/images/looks/003.webp" },
+            { id: 4, name: "Saia Midi Rosé", tag: "Novo", image: "/assets/images/looks/004.webp" },
+            { id: 5, name: "Look Chic Day", tag: "Oferta", image: "/assets/images/looks/005.webp" },
+            { id: 6, name: "Calça Pantalona Lux", tag: "Destaque", image: "/assets/images/looks/006.webp" }
+        ];
+
+        const REVIEWS = [
+            { id: 1, name: "Mariana Silva", comment: "Simplesmente apaixonada! O tecido é de uma qualidade absurda. Chegou muito rápido aqui em BH.", rating: 5, location: "Belo Horizonte, MG" },
+            { id: 2, name: "Beatriz Oliveira", comment: "Comprei o vestido para um casamento e nunca recebi tantos elogios. A CK Fashion arrasou!", rating: 5, location: "Guarulhos, SP" },
+            { id: 3, name: "Carla Mendes", comment: "O atendimento pelo WhatsApp é maravilhoso. Me ajudaram com o tamanho e serviu perfeitamente.", rating: 5, location: "Rio de Janeiro, RJ" }
+        ];
+
+        const FAQS = [
+            { question: "Qual o prazo de entrega?", answer: "Enviamos para todo o Brasil via Correios ou Transportadora. O prazo varia de 3 a 10 dias úteis dependendo da sua região." },
+            { question: "Como funciona a troca?", answer: "Sua primeira troca é grátis! Você tem até 7 dias após o recebimento para solicitar através do nosso WhatsApp." },
+            { question: "Quais as formas de pagamento?", answer: "Aceitamos Cartão de Crédito (até 12x), Boleto Bancário e PIX com 5% de desconto extra!" },
+            { question: "Onde fica a loja física?", answer: "Estamos localizados na Av. Vila Matias 198 - Jardim Santa Rita, Guarulhos - SP. Venha nos visitar!" }
+        ];
+
+        // --- COMPONENTE PRINCIPAL ---
+        const App = () => {
+            const [activeFaq, setActiveFaq] = useState(null);
+
+            const whatsappLink = "https://wa.me/5511980183198?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20ver%20mais%20peças.";
+            const instagramLink = "https://www.instagram.com/ck.fashionstore_/";
+
+            return (
+                <div className="min-h-screen bg-black text-white selection:bg-pink-600 selection:text-white">
+                    {/* Header */}
+                    <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10 px-4 py-4 md:px-12 flex justify-between items-center">
+                        <div className="flex items-center gap-4">
+                            <img 
+                                src="/assets/images/logo.jpg" 
+                                alt="CK Fashion Logo" 
+                                className="h-12 w-12 md:h-16 md:w-16 rounded-full border-2 border-pink-custom object-cover shadow-[0_0_20px_rgba(255,20,147,0.4)]"
+                            />
+                            <h1 className="text-xl md:text-2xl font-bold brand-font text-white tracking-tighter">CK <span className="text-pink-custom">FASHION</span></h1>
+                        </div>
+                        
+                        <nav className="hidden md:flex gap-8 font-medium">
+                            <a href="#home" className="hover:text-pink-custom transition-colors">Início</a>
+                            <a href="#colecao" className="hover:text-pink-custom transition-colors">Coleção</a>
+                            <a href="#depoimentos" className="hover:text-pink-custom transition-colors">Depoimentos</a>
+                            <a href="#faq" className="hover:text-pink-custom transition-colors">Dúvidas</a>
+                        </nav>
+
+                        <div className="flex items-center gap-4 md:gap-6">
+                            <a href={instagramLink} target="_blank" className="text-2xl hover:text-pink-custom transition-colors">
+                                <i className="fab fa-instagram"></i>
+                            </a>
+                            <a href={whatsappLink} target="_blank" className="text-2xl hover:text-pink-custom transition-colors">
+                                <i className="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </header>
+
+                    {/* Hero Section */}
+                    <section id="home" className="relative h-[85vh] flex items-center justify-center overflow-hidden">
+                        <div className="absolute inset-0 z-0">
+                            <img 
+                                src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070&auto=format&fit=crop" 
+                                alt="Moda Feminina Luxo" 
+                                className="w-full h-full object-cover opacity-50"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                        </div>
+
+                        <div className="relative z-10 text-center px-4 max-w-4xl">
+                            <h2 className="text-5xl md:text-8xl font-bold mb-6 brand-font leading-tight">
+                                Seu <span className="text-pink-custom">Estilo</span>, <br/>
+                                Sua <span className="border-b-4 border-pink-custom">Poder</span>.
+                            </h2>
+                            <p className="text-lg md:text-xl mb-10 text-gray-200 font-light tracking-widest uppercase">
+                                Peças exclusivas para mulheres que dominam o mundo.
+                            </p>
+                            <div className="flex flex-col md:flex-row gap-4 justify-center">
+                                <a href="#colecao" className="bg-pink-custom hover:bg-pink-700 text-white px-10 py-4 rounded-full font-bold transition-all transform hover:scale-105 shadow-[0_10px_30px_rgba(255,20,147,0.5)] uppercase tracking-wider">
+                                    Ver Coleção Completa
+                                </a>
+                                <a href={whatsappLink} className="bg-white hover:bg-gray-200 text-black px-10 py-4 rounded-full font-bold transition-all transform hover:scale-105 flex items-center justify-center gap-2 uppercase tracking-wider">
+                                    <i className="fab fa-whatsapp text-xl"></i> Chamar no Whats
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Gatilhos Mentais */}
+                    <section className="py-16 bg-white text-black">
+                        <div className="container mx-auto px-4">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                                <div className="text-center group">
+                                    <div className="text-pink-custom text-4xl mb-4 group-hover:scale-110 transition-transform duration-300"><i className="fas fa-truck-fast"></i></div>
+                                    <h4 className="font-bold text-lg">Entrega Nacional</h4>
+                                    <p className="text-sm text-gray-500 font-medium">Enviamos para todo Brasil</p>
+                                </div>
+                                <div className="text-center group">
+                                    <div className="text-pink-custom text-4xl mb-4 group-hover:scale-110 transition-transform duration-300"><i className="fas fa-shield-halved"></i></div>
+                                    <h4 className="font-bold text-lg">Compra Segura</h4>
+                                    <p className="text-sm text-gray-500 font-medium">Dados 100% protegidos</p>
+                                </div>
+                                <div className="text-center group">
+                                    <div className="text-pink-custom text-4xl mb-4 group-hover:scale-110 transition-transform duration-300"><i className="fas fa-rotate"></i></div>
+                                    <h4 className="font-bold text-lg">Troca Facilitada</h4>
+                                    <p className="text-sm text-gray-500 font-medium">7 dias para trocar</p>
+                                </div>
+                                <div className="text-center group">
+                                    <div className="text-pink-custom text-4xl mb-4 group-hover:scale-110 transition-transform duration-300"><i className="fas fa-gem"></i></div>
+                                    <h4 className="font-bold text-lg">Premium Quality</h4>
+                                    <p className="text-sm text-gray-500 font-medium">Curadoria exclusiva</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Featured Collection - Sem nomes e preços como solicitado anteriormente */}
+                    <section id="colecao" className="py-24 px-4 md:px-12 bg-black">
+                        <div className="text-center mb-16">
+                            <span className="text-pink-custom font-bold uppercase tracking-[0.4em] text-xs">Coleção 2026</span>
+                            <h2 className="text-4xl md:text-5xl font-bold mt-2 brand-font">Desejos da <span className="text-pink-custom italic">Temporada</span></h2>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                            {PRODUCTS.map((product) => (
+                                <div key={product.id} className="group relative">
+                                    <div className="relative overflow-hidden rounded-3xl bg-zinc-900 aspect-[3/4]">
+                                        <img 
+                                            src={product.image} 
+                                            alt="Peça de Coleção" 
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-90 group-hover:opacity-100"
+                                        />
+                                        <div className="absolute top-5 left-5 bg-pink-custom text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter">
+                                            {product.tag}
+                                        </div>
+                                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                                            <a href={whatsappLink} className="bg-white text-black px-8 py-3.5 rounded-full font-bold hover:bg-pink-custom hover:text-white transition-all transform translate-y-8 group-hover:translate-y-0 duration-500 shadow-2xl">
+                                                Eu quero este look!
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* Prova Social */}
+                    <section id="depoimentos" className="py-24 bg-zinc-950">
+                        <div className="container mx-auto px-4">
+                            <div className="text-center mb-16">
+                                <h2 className="text-4xl md:text-5xl font-bold brand-font mb-4">Experiência <span className="text-pink-custom">CK</span></h2>
+                                <p className="text-gray-500 font-medium">O que nossas clientes estão postando</p>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                {REVIEWS.map((review) => (
+                                    <div key={review.id} className="bg-zinc-900/50 p-8 rounded-[2rem] border border-white/5 hover:border-pink-500/50 transition-all duration-500">
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <div className="w-12 h-12 rounded-full bg-pink-custom/10 flex items-center justify-center text-pink-custom">
+                                                <i className="fas fa-user"></i>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold">{review.name}</h4>
+                                                <p className="text-xs text-pink-custom uppercase">{review.location}</p>
+                                            </div>
+                                        </div>
+                                        <p className="text-gray-300 italic mb-4">"{review.comment}"</p>
+                                        <div className="flex gap-1 text-pink-custom text-xs">
+                                            {[...Array(review.rating)].map((_, i) => <i key={i} className="fas fa-star"></i>)}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* FAQ */}
+                    <section id="faq" className="py-24 px-4 bg-black">
+                        <div className="max-w-3xl mx-auto">
+                            <h2 className="text-3xl font-bold text-center brand-font mb-12">Dúvidas <span className="text-pink-custom">Frequentes</span></h2>
+                            <div className="space-y-4">
+                                {FAQS.map((faq, idx) => (
+                                    <div key={idx} className="border border-white/5 rounded-3xl overflow-hidden bg-zinc-900/30">
+                                        <button 
+                                            className="w-full text-left p-6 flex justify-between items-center hover:bg-white/5"
+                                            onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
+                                        >
+                                            <span className="font-bold">{faq.question}</span>
+                                            <i className={`fas fa-plus transition-transform ${activeFaq === idx ? 'rotate-45 text-pink-custom' : ''}`}></i>
+                                        </button>
+                                        {activeFaq === idx && (
+                                            <div className="p-6 pt-0 text-gray-400 animate-fadeIn">
+                                                {faq.answer}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Localização & Contato */}
+                    <section className="py-24 bg-white text-black">
+                        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-16 items-center">
+                            <div>
+                                <h2 className="text-4xl font-bold brand-font mb-8">Nossa <span className="text-pink-custom">Maison</span></h2>
+                                <div className="space-y-8">
+                                    <div className="flex items-start gap-5">
+                                        <div className="bg-pink-custom text-white p-4 rounded-2xl shadow-lg"><i className="fas fa-location-dot"></i></div>
+                                        <div>
+                                            <h4 className="font-bold text-xl">Visite nosso espaço</h4>
+                                            <p className="text-gray-600">Av. Vila Matias 198 - Jardim Santa Rita, Guarulhos - SP</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-5">
+                                        <div className="bg-pink-custom text-white p-4 rounded-2xl shadow-lg"><i className="fab fa-whatsapp"></i></div>
+                                        <div>
+                                            <h4 className="font-bold text-xl">Atendimento VIP</h4>
+                                            <a href={whatsappLink} className="text-gray-600 hover:text-pink-custom transition-colors">(11) 98018-3198</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mt-12">
+                                    <a href={whatsappLink} className="bg-black text-white px-10 py-5 rounded-2xl font-black hover:bg-pink-custom transition-all inline-block uppercase tracking-widest shadow-xl">Falar com Consultora</a>
+                                </div>
+                            </div>
+                            <div className="relative">
+                                <div className="absolute -top-6 -left-6 w-full h-full border-4 border-pink-custom rounded-[3rem] z-0"></div>
+                                <img 
+                                    src="/assets/images/fachada.webp" 
+                                    alt="Fachada Loja" 
+                                    className="relative z-10 w-full h-full object-cover rounded-[2.5rem] shadow-2xl"
+                                />
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="bg-black py-16 px-4 border-t border-white/5 text-center">
+                        <h2 className="text-2xl font-bold brand-font mb-4 tracking-tighter">CK <span className="text-pink-custom">FASHION</span></h2>
+                        <p className="text-gray-500 text-xs uppercase tracking-widest">© 2026 CK Fashion Store. Todos os direitos reservados.</p>
+                        <div className="mt-8 flex justify-center gap-6 text-xl opacity-30 grayscale hover:grayscale-0 transition-all">
+                            <i className="fab fa-cc-visa"></i>
+                            <i className="fab fa-cc-mastercard"></i>
+                            <i className="fas fa-pix"></i>
+                        </div>
+                    </footer>
+
+                    {/* Floating WhatsApp */}
+                    <a href={whatsappLink} target="_blank" className="fixed bottom-8 right-8 bg-[#25D366] text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl animate-float z-50">
+                        <i className="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
